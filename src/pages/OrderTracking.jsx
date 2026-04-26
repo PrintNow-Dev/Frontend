@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiOrder, apiVendor, apiDoc } from '../api';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FiCheck, FiMessageCircle, FiPhoneCall, FiPackage, FiFile } from 'react-icons/fi';
 
 export default function OrderTracking() {
@@ -16,21 +16,23 @@ export default function OrderTracking() {
         const res = await apiOrder.get(`/${id}`);
         setOrder(res.data);
         
-        if (res.data.vendorId && !vendor) {
+        if (res.data.vendorId) {
           const vRes = await apiVendor.get(`/${res.data.vendorId}`);
           setVendor(vRes.data);
         }
 
-        if (res.data.documentId && !documentUrl) {
+        if (res.data.documentId) {
           const dRes = await apiDoc.get(`/${res.data.documentId}`);
           if (dRes.data?.path) setDocumentUrl(`/uploads/${dRes.data.path.split('/').pop()}`);
         }
-      } catch(e) {}
+      } catch {
+        return;
+      }
     };
     fetchOrder();
     const interval = setInterval(fetchOrder, 5000);
     return () => clearInterval(interval);
-  }, [id, vendor, documentUrl]);
+  }, [id]);
 
   if (!order) return <div className="flex justify-center items-center h-64"><div className="w-10 h-10 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div></div>;
 

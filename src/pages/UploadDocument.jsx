@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { apiDoc } from '../api';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FiUploadCloud, FiFile, FiCheckCircle, FiRefreshCw, FiArrowRight } from 'react-icons/fi';
 
 export default function UploadDocument() {
@@ -10,6 +10,22 @@ export default function UploadDocument() {
   const [loading, setLoading] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
   const navigate = useNavigate();
+
+  const processFile = useCallback(async (selectedFile) => {
+    setFile(selectedFile);
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    try {
+      const res = await apiDoc.post('/upload', formData);
+      setUploadedDoc(res.data);
+      localStorage.setItem('currentDoc', JSON.stringify(res.data));
+    } catch {
+      alert('Upload failed');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const handleDrag = useCallback((e) => {
     e.preventDefault();
@@ -29,23 +45,7 @@ export default function UploadDocument() {
         alert("Only PDF allowed");
       }
     }
-  }, []);
-
-  const processFile = async (selectedFile) => {
-    setFile(selectedFile);
-    setLoading(true);
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-    try {
-      const res = await apiDoc.post('/upload', formData);
-      setUploadedDoc(res.data);
-      localStorage.setItem('currentDoc', JSON.stringify(res.data));
-    } catch (e) {
-      alert('Upload failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [processFile]);
 
   const resetUpload = () => {
     setFile(null);

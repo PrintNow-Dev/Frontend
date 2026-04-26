@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { apiVendor } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FiMapPin, FiStar, FiArrowRight, FiDollarSign, FiInfo } from 'react-icons/fi';
+import { FiMapPin, FiStar, FiArrowRight } from 'react-icons/fi';
 
 export default function VendorSelection() {
   const [vendors, setVendors] = useState([]);

@@ -141,11 +141,21 @@
 import { useState, useEffect } from 'react';
 import { apiOrder } from '../api';
 import { Link } from 'react-router-dom';
-import { FiFileText, FiPlus, FiBox } from 'react-icons/fi';
+import { FiPlus, FiBox } from 'react-icons/fi';
 import {
   LineChart, Line, XAxis, YAxis, Tooltip,
   ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
+
+function StatCard({ title, value, sub }) {
+  return (
+    <div className="card-modern p-6">
+      <p className="text-gray-400 text-xs font-bold uppercase mb-2">{title}</p>
+      <h3 className="text-3xl font-black text-gray-900">{value}</h3>
+      {sub && <p className="text-sm text-brand-600 mt-1">{sub}</p>}
+    </div>
+  );
+}
 
 export default function UserDashboard() {
   const [orders, setOrders] = useState([]);
@@ -192,15 +202,6 @@ export default function UserDashboard() {
       amount: grouped[date]
     }))
     .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  // ================= UI =================
-  const StatCard = ({ title, value, sub }) => (
-    <div className="card-modern p-6">
-      <p className="text-gray-400 text-xs font-bold uppercase mb-2">{title}</p>
-      <h3 className="text-3xl font-black text-gray-900">{value}</h3>
-      {sub && <p className="text-sm text-brand-600 mt-1">{sub}</p>}
-    </div>
-  );
 
   return (
     <div className="max-w-7xl mx-auto">

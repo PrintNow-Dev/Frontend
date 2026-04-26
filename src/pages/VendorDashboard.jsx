@@ -4,6 +4,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiCheck, FiX, FiPrinter, FiSave, FiSettings, FiEye, FiDownload, FiXCircle, FiTrendingUp, FiShoppingBag, FiClock, FiDollarSign } from 'react-icons/fi';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, CartesianGrid, Legend } from 'recharts';
 
+function StatCard({ title, value, icon, color }) {
+  return (
+    <motion.div whileHover={{ y: -5 }} className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex items-center justify-between">
+      <div>
+        <p className="text-gray-400 font-bold text-xs uppercase tracking-widest mb-1">{title}</p>
+        <h3 className="text-3xl font-black text-gray-900">{value}</h3>
+      </div>
+      <div className={`w-14 h-14 rounded-full flex items-center justify-center ${color}`}>
+        {icon}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function VendorDashboard() {
   const [orders, setOrders] = useState([]);
   const [pricing, setPricing] = useState({ bw: 2, color: 5, minOrder: 0 });
@@ -38,7 +52,7 @@ export default function VendorDashboard() {
       await apiVendor.put('/pricing', pricing);
       setPricingSuccess(true);
       setTimeout(() => setPricingSuccess(false), 3000);
-    } catch(e) { alert("Failed to save pricing"); }
+    } catch { alert("Failed to save pricing"); }
     setPricingSaving(false);
   };
 
@@ -63,7 +77,7 @@ export default function VendorDashboard() {
         link.click();
         link.remove();
       }
-    } catch (e) {
+    } catch {
       alert("Unauthorized or file not found.");
     } finally {
       setIsDownloading(false);
@@ -103,18 +117,6 @@ export default function VendorDashboard() {
   }, {});
   const pieData = Object.keys(statusCount).map(key => ({ name: key, value: statusCount[key] }));
   const COLORS = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'];
-
-  const StatCard = ({ title, value, icon, color }) => (
-    <motion.div whileHover={{ y: -5 }} className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex items-center justify-between">
-      <div>
-        <p className="text-gray-400 font-bold text-xs uppercase tracking-widest mb-1">{title}</p>
-        <h3 className="text-3xl font-black text-gray-900">{value}</h3>
-      </div>
-      <div className={`w-14 h-14 rounded-full flex items-center justify-center ${color}`}>
-        {icon}
-      </div>
-    </motion.div>
-  );
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 relative pb-20">
