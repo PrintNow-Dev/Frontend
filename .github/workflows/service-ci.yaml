@@ -15,7 +15,7 @@ jobs:
 
     with:
       service: "frontend"
-      image: "ghcr.io/printnow-dev/frontend"
+      image: "ghcr.io/printnow-dev/printnow-frontend"
       trigger: ${{ github.event_name }}
 
     secrets: inherit
