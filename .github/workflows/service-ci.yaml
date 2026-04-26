@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   pipeline:
-    uses: PrintNow-Dev/PrintNow/.github/workflows/backend.yml@dev
+    uses: PrintNow-Dev/PrintNow/.github/workflows/frontend.yml@dev
 
     with:
       service: "frontend"
