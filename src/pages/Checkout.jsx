@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiOrder } from '../api';
-import { FiCreditCard, FiDollarSign, FiFileText, FiInfo, FiLayers } from 'react-icons/fi';
+import { FiCreditCard, FiDollarSign, FiFileText, FiInfo } from 'react-icons/fi';
 
 export default function Checkout() {
   const [method, setMethod] = useState('COD');
@@ -44,7 +44,7 @@ export default function Checkout() {
           try {
             await apiOrder.post('/payment/verify', { ...response, orderId: orderIdToVerify });
             navigate(`/tracking/${orderIdToVerify}`);
-          } catch(e) {
+          } catch {
             alert('Payment verification failed');
             setLoading(false);
           }
@@ -58,7 +58,7 @@ export default function Checkout() {
         setLoading(false);
       });
       rzp.open();
-    } catch (e) {
+    } catch {
       alert('Error initiating payment');
       setLoading(false);
     }
@@ -75,7 +75,7 @@ export default function Checkout() {
       } else {
         navigate(`/tracking/${res.data._id}`);
       }
-    } catch (e) {
+    } catch {
       alert('Order failed');
       setLoading(false);
     }

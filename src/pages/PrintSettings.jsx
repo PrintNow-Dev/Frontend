@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiMinus, FiPlus, FiArrowRight, FiFileText, FiLayers, FiAlertCircle } from 'react-icons/fi';
 
@@ -10,7 +10,6 @@ export default function PrintSettings() {
   const [settings, setSettings] = useState({ color: 'B&W', copies: 1, size: 'A4' });
   const [selectionMode, setSelectionMode] = useState('all');
   const [customRange, setCustomRange] = useState('');
-  const [error, setError] = useState('');
 
   const parsePageRange = (rangeStr) => {
     if (!rangeStr.trim()) return [];
@@ -36,15 +35,13 @@ export default function PrintSettings() {
     ? Array.from({length: maxPages}, (_, i) => i + 1) 
     : parsePageRange(customRange);
 
-  useEffect(() => {
-    if (selectionMode === 'custom') {
-      if (selectedPagesList === null) setError(`Invalid range. Must be between 1 and ${maxPages}. Format: 1-5, 8`);
-      else if (selectedPagesList.length === 0) setError(`Please enter a valid page range.`);
-      else setError('');
-    } else {
-      setError('');
-    }
-  }, [customRange, selectionMode, maxPages]);
+  const error = selectionMode !== 'custom'
+    ? ''
+    : selectedPagesList === null
+      ? `Invalid range. Must be between 1 and ${maxPages}. Format: 1-5, 8`
+      : selectedPagesList.length === 0
+        ? 'Please enter a valid page range.'
+        : '';
 
   const totalPagesToPrint = selectedPagesList ? selectedPagesList.length : 0;
 

@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FiPrinter } from 'react-icons/fi';
-import { motion } from 'framer-motion';
 
 export default function Navbar() {
   const { user } = useAuth();
